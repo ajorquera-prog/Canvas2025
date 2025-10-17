@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glosario Interactivo UDD - Flip Cards</title>
+<style>
+:root{
+  --udd-blue: #0a539e;
+  --udd-dark: #083870;
+  --udd-gray: #f4f6f8;
+  --card-bg: #ffffff;
+  --accent: #f2a900;
+  --text: #1f2933;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(20,30,40,0.08);
+  --shadow-hover: 0 12px 30px rgba(20,30,40,0.12);
+  --gap: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  color:var(--text);
+  padding:28px;
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo {
+  width:54px;
+  height:54px;
+  border-radius:10px;
+  background: linear-gradient(135deg,var(--udd-blue),var(--udd-dark));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:18px;
+  box-shadow: var(--shadow);
+}
+.header h1{
+  margin:0;
+  font-size:20px;
+  color:var(--udd-dark);
+}
+.header p{margin:0;color:#55636f;font-size:13px}
+
+/* Controls */
+.controls{
+  margin-top:12px;
+  margin-bottom:18px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.search {
+  flex:1 1 320px;
+  max-width:620px;
+  display:flex;
+  background: white;
+  border-radius:999px;
+  padding:8px 12px;
+  box-shadow: var(--shadow);
+  align-items:center;
+  gap:8px;
+  border:1px solid #e6eef7;
+}
+.search input{
+  border:0;
+  outline:none;
+  width:100%;
+  font-size:14px;
+  padding:8px 6px;
+  background:transparent;
+}
+
+/* Grid of cards */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gap);
+  margin-top:6px;
+}
+
+/* Flip card */
+.flip {
+  perspective: 1200px;
+}
+.card {
+  width:100%;
+  height:160px;
+  position:relative;
+  transform-style: preserve-3d;
+  transition: transform 600ms cubic-bezier(.2,.9,.3,1);
+}
+.card-inner {
+  position:absolute;
+  inset:0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 600ms cubic-bezier(.2,.9,.3,1);
+  transform-style: preserve-3d;
+}
+
+/* front/back faces */
+.card-face {
+  position:absolute;
+  inset:0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:8px;
+}
+.card-front{
+  background: linear-gradient(180deg, rgba(10,83,158,0.06), rgba(255,255,255,0.02));
+  border:1px solid rgba(10,83,158,0.06);
+}
+.card-back{
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  transform: rotateY(180deg);
+  border:1px solid rgba(8,56,112,0.04);
+}
+
+/* when flipped */
+.flip:focus-within .card-inner,
+.flip:hover .card-inner,
+.flip[aria-pressed="true"] .card-inner {
+  transform: rotateY(180deg);
+  box-shadow: var(--shadow-hover);
+}
+
+/* content styles */
+.term {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.term-badge{
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  background:linear-gradient(180deg,var(--udd-blue),var(--udd-dark));
+  color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+  font-size:16px;
+  flex-shrink:0;
+  box-shadow: 0 6px 14px rgba(10,83,158,0.12);
+}
+.term h3{
+  margin:0;
+  font-size:15px;
+  color:var(--udd-dark);
+}
+.small{
+  margin:0;
+  color:#475569;
+  font-size:13px;
+}
+
+/* back text */
+.definition {
+  font-size:14px;
+  color:#22303b;
+  overflow:auto;
+  line-height:1.45;
+}
+.meta {
+  margin-top:auto;
+  display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#6b7280;
+}
+
+/* responsive tweaks */
+@media (max-width:520px){
+  .card{height:150px}
+  .term-badge{width:40px;height:40px;font-size:14px}
+  .header h1{font-size:16px}
+}
+
+/* subtle focus outline for keyboard users */
+.flip:focus-within {
+  outline: 3px solid rgba(10,83,158,0.12);
+  outline-offset:6px;
+}
+
+/* no JS message */
+.no-js {
+  background:#fff7cc;
+  border:1px solid #ffe08a;
+  padding:10px 12px;
+  border-radius:8px;
+  margin-bottom:12px;
+  color:#664d03;
+  font-size:13px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">
+    <div class="logo">UDD</div>
+    <div>
+      <h1>Glosario Interactivo — UDD</h1>
+      <p>Haz clic o presiona Enter sobre cualquier tarjeta para ver la definición. Diseño responsive y accesible.</p>
+    </div>
+  </div>
+</div>
+
+<div class="no-js" id="nojs">Si no ves animaciones, activa JavaScript o usa un navegador moderno. (Canvas soporta HTML y CSS; si Canvas limita transformaciones, pega el archivo en la vista HTML de la Página.)</div>
+
+<div class="controls">
+  <div class="search" role="search" aria-label="Buscar en glosario">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#9aaec8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#9aaec8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <input id="searchInput" type="search" placeholder="Buscar término (ej. presupuesto, desarrollo...)" aria-label="Buscar término en glosario">
+  </div>
+</div>
+
+<div class="grid" id="grid">
+  <!-- Cards inserted by JS -->
+</div>
+
+<script>
+// Data: términos y definiciones
+const terms = [
+  {term:"Desarrollo", def:"Proceso mediante el cual se busca mejorar las condiciones de vida de los individuos, familias, comunidades y países en general."},
+  {term:"Desarrollo Sostenible", def:"Desarrollo que satisface las necesidades del presente sin comprometer la capacidad de las futuras generaciones para satisfacer sus propias necesidades."},
+  {term:"Desarrollo Humano", def:"Proceso de aumento de las oportunidades de las personas, entre ellas, la capacidad de vivir una vida sana, la educación y el disfrute de un nivel de vida decente, las libertades políticas, los derechos humanos, entre otros."},
+  {term:"Derechos Humanos", def:"Garantías jurídicas universales que protegen a individuos y grupos contra acciones que interfieran en sus libertades fundamentales y en la dignidad humana."},
+  {term:"Desarrollo Territorial", def:"Proceso de construcción social del entorno, impulsado por la interacción entre las características geofísicas, las iniciativas individuales y colectivas de distintos actores y la operación de las fuerzas económicas, tecnológicas, sociopolíticas, culturales y ambientales en el territorio."},
+  {term:"Programa Público", def:"Conjunto de actividades necesarias, integradas y articuladas para proveer ciertos bienes y/o servicios (componentes), tendientes a lograr un propósito específico en una población objetivo, de modo de resolver un problema que la afecte."},
+  {term:"Proyecto Público", def:"Es aquel que busca alcanzar un impacto sobre la Calidad de Vida y Bienestar de la sociedad en su conjunto y generar condiciones para el desarrollo económico, financiado con recursos públicos."},
+  {term:"Sistema Regional de Planificación", def:"Conjunto coherente de instrumentos de planificación, de ordenamiento territorial y de programación presupuestaria elaborados por el Gobierno Regional mediante procesos políticos, técnicos y participativos, con el objeto de promover el desarrollo de la Región involucrando a los múltiples actores relevantes del territorio."},
+  {term:"Estrategia Regional de Desarrollo (ERD)", def:"Proyecto social de largo plazo, amplio y plural, que expresa los grandes objetivos y prioridades regionales en lo relativo a las iniciativas públicas y privadas necesarias para alcanzar tales objetivos."},
+  {term:"Plan Regional de Ordenamiento Territorial", def:"Instrumento que orienta la utilización del territorio de la región para lograr su desarrollo sustentable a través de lineamientos estratégicos y una macro zonificación de dicho territorio."},
+  {term:"Política Pública Regional", def:"Instrumento de planificación diseñado por los gobiernos regionales, que refleja una respuesta o solución consensuada y participativa a determinadas situaciones problemáticas o insatisfactorias, que han sido identificadas como relevantes en ámbitos circunscritos de la realidad regional."},
+  {term:"Plan Plurianual Multinivel de Inversiones", def:"Está concebido con el objetivo de analizar, definir y ordenar las inversiones más eficientes y eficaces para implementar las Políticas Públicas Regionales, mediante la sistematización de las preferencias de la comunidad regional, expresadas por autoridades, técnicos y ciudadanía."},
+  {term:"Presupuesto del Sector Público", def:"Es una estimación financiera de ingresos y gastos del sector público para un año, que tiene fuerza de ley una vez aprobada por el Congreso."},
+  {term:"Ley de Presupuestos", def:"Norma legal anual que autoriza el gasto público y la forma en que se financiará. Refleja las prioridades de política pública del gobierno."},
+  {term:"Programa Financiero de Mediano Plazo", def:"Proyección trianual que orienta la política fiscal. Incluye estimaciones macroeconómicas, gastos estructurales y marcos fiscales de referencia."},
+  {term:"Clasificación Presupuestaria", def:"Forma de organizar los ingresos y gastos en el presupuesto. Incluye clasificaciones institucional, económica, funcional y por objeto del gasto."},
+  {term:"Ciclo Presupuestario", def:"Conjunto de etapas que recorre el presupuesto: formulación, aprobación, ejecución y evaluación. Permite gestionar y controlar el uso de los recursos públicos."},
+  {term:"Glosa Presupuestaria", def:"Condición específica contenida en la Ley de Presupuestos que establece cómo se pueden usar ciertos recursos públicos. Tiene carácter normativo."},
+  {term:"Subtítulo Presupuestario", def:"Es una categoría dentro de la clasificación por objeto del gasto que agrupa los recursos públicos según el tipo de gasto que representan. Estos gastos se denominan técnicamente erogaciones, es decir, salidas de dinero del Estado hacia terceros. El subtítulo refleja el tipo de erogación involucrada."}
+];
+
+// Utility: initials for badge
+function initials(text){
+  // use up to 2 letters
+  return text.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+}
+
+// Create card nodes
+const grid = document.getElementById('grid');
+
+function createCard(obj, idx){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'flip';
+  wrapper.tabIndex = 0;
+  wrapper.setAttribute('role','button');
+  wrapper.setAttribute('aria-pressed','false');
+  wrapper.setAttribute('aria-label', obj.term + ' — ver definición');
+  wrapper.dataset.term = obj.term.toLowerCase();
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const inner = document.createElement('div');
+  inner.className = 'card-inner';
+
+  // front
+  const front = document.createElement('div');
+  front.className = 'card-face card-front';
+  front.innerHTML = `
+    <div class="term">
+      <div class="term-badge">${initials(obj.term)}</div>
+      <div>
+        <h3>${obj.term}</h3>
+        <p class="small">Haz clic para ver la definición</p>
+      </div>
+    </div>
+  `;
+
+  // back
+  const back = document.createElement('div');
+  back.className = 'card-face card-back';
+  back.innerHTML = `
+    <div class="definition">${obj.def}</div>
+    <div class="meta"><span>Fuente: Material del curso</span><span>${idx+1}/${terms.length}</span></div>
+  `;
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  card.appendChild(inner);
+  wrapper.appendChild(card);
+
+  // Interaction: toggle aria-pressed and keep focus
+  wrapper.addEventListener('click', ()=>{
+    const pressed = wrapper.getAttribute('aria-pressed') === 'true';
+    wrapper.setAttribute('aria-pressed', String(!pressed));
+  });
+  wrapper.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      wrapper.click();
+    } else if(e.key === 'Escape'){
+      wrapper.setAttribute('aria-pressed','false');
+    }
+  });
+
+  return wrapper;
+}
+
+// Render all
+function render(list){
+  grid.innerHTML = '';
+  list.forEach((t,i)=> grid.appendChild(createCard(t,i)));
+}
+render(terms);
+
+// Search functionality
+const input = document.getElementById('searchInput');
+input.addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(!q) return render(terms);
+  const filtered = terms.filter(t => t.term.toLowerCase().includes(q) || t.def.toLowerCase().includes(q));
+  render(filtered);
+});
+
+// If Canvas strips JS, show instruction
+window.addEventListener('load', ()=>{
+  // hide no-js only if JS runs
+  const nojs = document.getElementById('nojs');
+  if(nojs) nojs.style.display = 'none';
+});
+</script>
+
+</body>
+</html>
